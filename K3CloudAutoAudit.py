@@ -91,7 +91,7 @@ def flat1(inputlist, result=None):
 #AR_receivable 应收单
 billtypes=['IV_SALESIC','IV_SALESOC']
 #组装筛选条件时间
-Jztime='2020/05/01 00:00:00'
+Jztime=time.strftime("%Y-%m-01 00:00:00", time.localtime())
 #组装内容
 for billtype in billtypes:
     post_data = {"data": json.dumps({"FormId": "%s"%(billtype), "FieldKeys": "FID","FilterString": "FDOCUMENTSTATUS !='C' AND FDATE>=TO_DATE(\'%s\','YYYY/MM/DD HH24:MI:SS')" % (Jztime)})}
