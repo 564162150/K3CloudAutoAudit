@@ -86,17 +86,23 @@ def flat1(inputlist, result=None):
 
 ##开始查询待提交或审核ID范围
 #检查单据类型
-billtype='IV_SALESOC'
+#IV_SALESOC 普票
+#IV_SALESIC 专票
+#AR_receivable 应收单
+billtypes=['IV_SALESIC','IV_SALESOC']
 #组装筛选条件时间
-Jztime='2020/01/01 00:00:00'
+Jztime='2020/05/01 00:00:00'
 #组装内容
-post_data = {"data": json.dumps({"FormId": "%s"%(billtype), "FieldKeys": "FID","FilterString": "FDOCUMENTSTATUS !='C' AND FDATE>=TO_DATE(\'%s\','YYYY/MM/DD HH24:MI:SS')" % (Jztime)})}
-#提交并接收结果内容
-response=requests.post(url=ExecuteBillQuery_url,data=post_data,cookies=login())
-
-#显示ID结果
-jsob=json.loads(response.text)
-print('总共待审核单数：'+str(len(jsob)))
-#每次提交和审核单数
-step=10
-sububill(jsob,billtype,step)
+for billtype in billtypes:
+    post_data = {"data": json.dumps({"FormId": "%s"%(billtype), "FieldKeys": "FID","FilterString": "FDOCUMENTSTATUS !='C' AND FDATE>=TO_DATE(\'%s\','YYYY/MM/DD HH24:MI:SS')" % (Jztime)})}
+    #提交并接收结果内容
+    response=requests.post(url=ExecuteBillQuery_url,data=post_data,cookies=login())
+    #显示ID结果
+    jsob=json.loads(response.text)
+    print('总共待审核单数：'+str(len(jsob)))
+    #每次提交和审核单数
+    if len(jsob):
+        step=10
+        sububill(jsob,billtype,step)
+    else:
+        pass
