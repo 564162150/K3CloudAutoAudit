@@ -31,15 +31,8 @@ def jsmsg(Submit):
 
 #定义提交并审核方法
 def sububill(billidinfo,billtype,step):
-    #计算循环处理批次
-    if len(billidinfo) and len(billidinfo)%step==0:
-        b=(len(billidinfo)//step)
-    elif len(billidinfo)%step:
-        b=(len(billidinfo)//step)+1
-    elif len(billidinfo)==0:
-        b=[]
     #开始循环
-    for i in range(b):
+    for i in range(0,len(billidinfo),step):
         #审核指定ID的单据
         ida=billidinfo[step*i:step*(i+1)]
         idd = [str(j) for j in flat1(ida)]
